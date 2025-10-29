@@ -11,6 +11,7 @@ Entity::Entity()
 	position_.previous.y = position_.current.y;
 
 	speed_ = 100.0f;
+	direction_ = 1;
 
 	movement_.x = speed_;
 	movement_.y = speed_;
@@ -18,6 +19,21 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+}
+
+bool Entity::started()
+{
+	return speed_ != 0;
+}
+
+void Entity::start()
+{
+	speed_ = 100.0f;
+}
+
+void Entity::stop()
+{
+	speed_ = 0.0f;
 }
 
 void Entity::updateBegin()
@@ -33,15 +49,44 @@ void Entity::update(double time)
 	// To make it simpler, just go back and forth horizontally.
 	//position.current.y += (movement.y * time);
 
+	//if (position_.current.x >= 2000)
+	//{
+	//	changeTimeStampPrev = changeTimeStamp;
+
+	//	changeTimeStamp = timer.tick();
+
+	//	double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
+
+	//	std::cout << "Reached target at time " << time << std::endl;
+	//}
+
 	if (position_.current.x <= 0)
 	{
-		movement_.x = speed_;
+		direction_ = 1;
+
+		changeTimeStampPrev = changeTimeStamp;
+
+		changeTimeStamp = timer.tick();
+
+		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
+
+		//std::cout << "Reached target at time " << time << std::endl;
 	}
 	else if (position_.current.x + size_.width >= SCREEN_WIDTH)
 	{
-		movement_.x = -speed_;
+		direction_ = -1;
+
+		changeTimeStampPrev = changeTimeStamp;
+
+		changeTimeStamp = timer.tick();
+
+		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
+
+		//std::cout << "Reached target at time " << time << std::endl;
 	}
-	
+
+	movement_.x = direction_ * speed_;
+
 	if (position_.current.y <= 0)
 	{
 		movement_.y = speed_;

@@ -35,7 +35,7 @@ int32_t Timer::getFrameCount()
 
 double Timer::getDeltaTime()
 {
-	return (double)timeDeltaMsec_ / 1000.0;
+	return timeDelta_;
 }
 
 double Timer::getDeltaTimeMsec()
@@ -50,8 +50,6 @@ double Timer::getTotalTime()
 
 uint64_t Timer::frameTick()
 {
-	uint64_t timeDeltaUsec = 0;
-
 	if (started_ == true)
 	{
 		// Save the time at the previous tick.
@@ -59,11 +57,11 @@ uint64_t Timer::frameTick()
 
 		timeCurrentUsec_ = tick();
 
-		timeDeltaUsec = timeCurrentUsec_ - timePreviousUsec_;
+		timeDeltaUsec_ = timeCurrentUsec_ - timePreviousUsec_;
 
-		timeDeltaMsec_ = timeDeltaUsec / 1000L;
+		timeDeltaMsec_ = timeDeltaUsec_ / 1000L;
 
-		timeDelta_ = (double)timeDeltaUsec / 1000000L;
+		timeDelta_ = (double)timeDeltaUsec_ / 1000000.0;
 
 		frameCounter_++;
 

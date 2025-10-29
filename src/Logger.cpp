@@ -4,6 +4,7 @@ Logger logger;
 
 Logger::Logger()
 {
+	//loggingOn_ = true;
 	loggingOn_ = false;
 }
 

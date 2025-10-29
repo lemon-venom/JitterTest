@@ -27,6 +27,16 @@ void handleInput(SDL_Keycode keycode) {
 	case SDLK_l:
 		logger.toggleLog();
 		break;
+	case SDLK_s:
+		if (entity.started())
+		{
+			entity.stop();
+		}
+		else
+		{
+			entity.start();
+		}
+		break;
 	}
 }
 

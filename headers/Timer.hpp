@@ -35,6 +35,7 @@ private:
 	uint64_t	timeCurrentUsec_;
 	double		timeDelta_;
 	uint64_t	timeDeltaMsec_;
+	uint64_t	timeDeltaUsec_;
 	uint64_t	timePreviousUsec_;
 	uint64_t	totalTimeMsec_;
 	double		totalTime_;

@@ -31,11 +31,18 @@ public:
     virtual ~Entity();
 
     void render(Renderer* renderer, float lerp);
+    void start();
+    bool started();
+    void stop();
     void updateBegin();
     void update(double time);
 
+    int         direction_;
     Position    position_;
     Vec2        movement_;
     Size        size_;
     float       speed_;
+
+    uint64_t    changeTimeStamp;
+    uint64_t    changeTimeStampPrev;
 };
