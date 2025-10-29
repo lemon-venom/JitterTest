@@ -12,6 +12,7 @@ Entity::Entity()
 
 	speed_ = 100.0f;
 	direction_ = 1;
+	target_ = 1000.0f;
 
 	movement_.x = speed_;
 	movement_.y = speed_;
@@ -49,7 +50,7 @@ void Entity::update(double time)
 	// To make it simpler, just go back and forth horizontally.
 	//position.current.y += (movement.y * time);
 
-	//if (position_.current.x >= 2000)
+	//if (position_.current.x >= target_)
 	//{
 	//	changeTimeStampPrev = changeTimeStamp;
 
@@ -57,7 +58,9 @@ void Entity::update(double time)
 
 	//	double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
 
-	//	std::cout << "Reached target at time " << time << std::endl;
+	//	std::cout << "Reached " << position_.current.x << " in " << time << " seconds, time is " << timer.getTotalTime() << std::endl;
+
+	//	target_ += 1000;
 	//}
 
 	if (position_.current.x <= 0)
@@ -70,7 +73,7 @@ void Entity::update(double time)
 
 		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
 
-		//std::cout << "Reached target at time " << time << std::endl;
+		//std::cout << "Reached target in " << time << " seconds, at time " << timer.getTotalTime() << std::endl;
 	}
 	else if (position_.current.x + size_.width >= SCREEN_WIDTH)
 	{
@@ -82,7 +85,7 @@ void Entity::update(double time)
 
 		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
 
-		//std::cout << "Reached target at time " << time << std::endl;
+		//std::cout << "Reached target in " << time << " seconds, at time " << timer.getTotalTime() << std::endl;
 	}
 
 	movement_.x = direction_ * speed_;
@@ -97,17 +100,25 @@ void Entity::update(double time)
 	}
 }
 
-void Entity::render(Renderer* renderer, float lerp)
+void Entity::render(Renderer* renderer, double lerp)
 {
 	float r = 0.59f;
 	float g = 0.56f;
 	float b = 0.0f;
 	float a = 1.0f;
 
-	Vec2 renderAt;
 
-	renderAt.x = (position_.previous.x * (1 - lerp)) + (position_.current.x * lerp);
-	renderAt.y = (position_.previous.y * (1 - lerp)) + (position_.current.y * lerp);
+	Vec2	renderAtPrev;
+	renderAtPrev.x = renderAt_.x;
+
+	renderAt_.x = (position_.previous.x * (1 - lerp)) + (position_.current.x * lerp);
+	renderAt_.y = (position_.previous.y * (1 - lerp)) + (position_.current.y * lerp);
+
+	if (renderAtPrev.x - renderAt_.x != 0)
+	{
+		//std::cout << "Rendering at x=" << renderAt_.x << "   Render position delta " << renderAtPrev.x - renderAt_.x << std::endl;
+	}
+
 
 	std::ostringstream oss;
 
@@ -116,7 +127,7 @@ void Entity::render(Renderer* renderer, float lerp)
 		<< "Current position = " << position_.current.x << ", " << position_.current.y << std::endl
 		<< "Previous position = " << position_.previous.x << ", " << position_.previous.y << std::endl
 		<< "lerp = " << lerp << std::endl
-		<< "Rendering at " << renderAt.x << ", " << renderAt.y << " at time " << timer.getTotalTime() << " delta time = " << timer.getDeltaTime() << std::endl;
+		<< "Rendering at " << renderAt_.x << ", " << renderAt_.y << " at time " << timer.getTotalTime() << " delta time = " << timer.getDeltaTime() << std::endl;
 
 
 	logger.log(oss.str());
@@ -125,8 +136,8 @@ void Entity::render(Renderer* renderer, float lerp)
 
 	ColorVertex3D v1;
 
-	v1.position.x = renderAt.x;
-	v1.position.y = renderAt.y;
+	v1.position.x = renderAt_.x;
+	v1.position.y = renderAt_.y;
 	v1.position.z = 0.0f;
 
 	v1.rgba.r = r;
@@ -138,8 +149,8 @@ void Entity::render(Renderer* renderer, float lerp)
 
 	ColorVertex3D v2;
 
-	v2.position.x = renderAt.x + size_.width;
-	v2.position.y = renderAt.y;
+	v2.position.x = renderAt_.x + size_.width;
+	v2.position.y = renderAt_.y;
 	v2.position.z = 0.0f;
 
 	v2.rgba.r = r;
@@ -151,8 +162,8 @@ void Entity::render(Renderer* renderer, float lerp)
 
 	ColorVertex3D v3;
 
-	v3.position.x = renderAt.x + size_.width;
-	v3.position.y = renderAt.y + size_.height;
+	v3.position.x = renderAt_.x + size_.width;
+	v3.position.y = renderAt_.y + size_.height;
 	v3.position.z = 0.0f;
 
 	v3.rgba.r = r;
@@ -164,8 +175,8 @@ void Entity::render(Renderer* renderer, float lerp)
 
 	ColorVertex3D v4;
 
-	v4.position.x = renderAt.x;
-	v4.position.y = renderAt.y + size_.height;
+	v4.position.x = renderAt_.x;
+	v4.position.y = renderAt_.y + size_.height;
 	v4.position.z = 0.0f;
 
 	v4.rgba.r = r;

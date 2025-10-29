@@ -30,16 +30,19 @@ public:
     Entity();
     virtual ~Entity();
 
-    void render(Renderer* renderer, float lerp);
+    void render(Renderer* renderer, double lerp);
     void start();
     bool started();
     void stop();
     void updateBegin();
     void update(double time);
 
+    float       target_;
+
     int         direction_;
     Position    position_;
     Vec2        movement_;
+    Vec2        renderAt_;
     Size        size_;
     float       speed_;
 

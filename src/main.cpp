@@ -96,7 +96,7 @@ void updateEnd() {
 
 void render() {
 
-	float lerp = timer.timeAccumulator / timer.fixedTimeStep;
+	double lerp = timer.timeAccumulator / timer.fixedTimeStep;
 
 	renderer->sceneBegin();
 
@@ -117,6 +117,10 @@ int main(int argc, char* args[]) {
 
 	while (quit == false) {
 
+		timer.frameTick();
+
+		timer.timeAccumulator += timer.getDeltaTime();
+
 		while (SDL_PollEvent(&event)) {
 
 			switch (event.type)	{
@@ -132,10 +136,6 @@ int main(int argc, char* args[]) {
 				break;
 			}
 		}
-
-		timer.frameTick();
-
-		timer.timeAccumulator += timer.getDeltaTime();
 
 		update();
 
