@@ -7,7 +7,7 @@ Timer::Timer()
 	frameCounter_ = -1;
 	fps_ = 0;
 	fpsFrameCounter_ = 0;
-	fpsTimeCounterMsec_ = 0;
+	fpsTimeCounter_ = 0;
 	timeDeltaMsec_ = 0.0;
 	totalTime_ = 0.0;
 }
@@ -70,7 +70,7 @@ uint64_t Timer::frameTick()
 		totalTime_ += timeDelta_;
 	}
 
-	fpsTimeCounterMsec_ += timeDeltaMsec_;
+	fpsTimeCounter_ += timeDelta_;
 
 	fpsFrameCounter_++;
 
@@ -78,9 +78,9 @@ uint64_t Timer::frameTick()
 	bool setFps = false;
 
 	// If greater than a second, subtract off seconds until less than a second
-	while (fpsTimeCounterMsec_ > 1000L)
+	while (fpsTimeCounter_ > 1.0)
 	{
-		fpsTimeCounterMsec_ -= 1000L;
+		fpsTimeCounter_ -= 1.0;
 
 		setFps = true;
 	}

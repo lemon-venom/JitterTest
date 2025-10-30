@@ -26,7 +26,7 @@ public:
 
 private:
 	uint32_t	fps_;
-	uint64_t	fpsTimeCounterMsec_;
+	double		fpsTimeCounter_;
 	uint32_t	fpsFrameCounter_;
 	uint64_t	frameCounter_;
 	bool		started_;
