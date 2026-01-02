@@ -11,7 +11,10 @@ Entity entity;
 bool quit = false;
 
 
-const uint64_t fpsLimiterMsec_ = (1.0 / 60.0) * 1000;
+// Turn off limiter, rely on VSync instead.
+const uint64_t fpsLimiterMsec_ = 0.0;// (1.0 / 60.0) * 1000;
+
+
 uint64_t frameEndTimeMsec = 0;
 uint64_t frameStartTimeMsec = 0;
 
@@ -90,6 +93,8 @@ void updateEnd() {
 		}
 	}
 
+	std::cout << "\rFrame time: " << frameTimeMsec << " msec FPS: " << timer.getFps() << "     " << std::flush;
+
 	// Get the start time now, so we don't lose any time to the overhead tasks between now and when the next tick happens.
 	frameStartTimeMsec = timer.tick() / 1000L;
 }
@@ -119,8 +124,17 @@ int main(int argc, char* args[]) {
 
 		timer.frameTick();
 
-		timer.timeAccumulator += timer.getDeltaTime();
+		double timeDelta = timer.getDeltaTime();
 
+		timer.timeAccumulator += timeDelta;
+		//std::cout << timeDelta << std::endl;
+
+		if (timeDelta > 0.016)
+		{
+			bool breaker = true;
+		}
+
+		uint64_t start = timer.tick();
 		while (SDL_PollEvent(&event)) {
 
 			switch (event.type)	{
@@ -136,6 +150,17 @@ int main(int argc, char* args[]) {
 				break;
 			}
 		}
+
+		uint64_t end = timer.tick();
+
+		uint64_t duration = end - start;
+
+		double durationMsec = (double)duration / 1000.0;
+
+		//if (durationMsec > 8.0)
+		//{
+		//	std::cout << "\rMessage pump took " << durationMsec << "ms in frame " << timer.getFrameCount() << std::endl;
+		//}
 
 		update();
 

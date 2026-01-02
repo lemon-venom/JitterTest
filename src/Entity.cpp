@@ -45,57 +45,20 @@ void Entity::updateBegin()
 
 void Entity::update(double time)
 {
+	// Move back and forth horizontally.
 	position_.current.x += (movement_.x * time);
 
-	// To make it simpler, just go back and forth horizontally.
-	//position.current.y += (movement.y * time);
-
-	//if (position_.current.x >= target_)
-	//{
-	//	changeTimeStampPrev = changeTimeStamp;
-
-	//	changeTimeStamp = timer.tick();
-
-	//	double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
-
-	//	std::cout << "Reached " << position_.current.x << " in " << time << " seconds, time is " << timer.getTotalTime() << std::endl;
-
-	//	target_ += 1000;
-	//}
-
-	if (position_.current.x <= 0)
-	{
+	if (position_.current.x <= 0) {
 		direction_ = 1;
-
-		changeTimeStampPrev = changeTimeStamp;
-
-		changeTimeStamp = timer.tick();
-
-		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
-
-		//std::cout << "Reached target in " << time << " seconds, at time " << timer.getTotalTime() << std::endl;
-	}
-	else if (position_.current.x + size_.width >= SCREEN_WIDTH)
-	{
+	} else if (position_.current.x + size_.width >= SCREEN_WIDTH) {
 		direction_ = -1;
-
-		changeTimeStampPrev = changeTimeStamp;
-
-		changeTimeStamp = timer.tick();
-
-		double time = (double)(changeTimeStamp - changeTimeStampPrev) / 1000000.0;
-
-		//std::cout << "Reached target in " << time << " seconds, at time " << timer.getTotalTime() << std::endl;
 	}
 
 	movement_.x = direction_ * speed_;
 
-	if (position_.current.y <= 0)
-	{
+	if (position_.current.y <= 0) {
 		movement_.y = speed_;
-	}
-	else if (position_.current.y + size_.height >= SCREEN_HEIGHT)
-	{
+	} else if (position_.current.y + size_.height >= SCREEN_HEIGHT)	{
 		movement_.y = -speed_;
 	}
 }
@@ -107,18 +70,11 @@ void Entity::render(Renderer* renderer, double lerp)
 	float b = 0.0f;
 	float a = 1.0f;
 
-
 	Vec2	renderAtPrev;
 	renderAtPrev.x = renderAt_.x;
 
 	renderAt_.x = (position_.previous.x * (1 - lerp)) + (position_.current.x * lerp);
 	renderAt_.y = (position_.previous.y * (1 - lerp)) + (position_.current.y * lerp);
-
-	if (renderAtPrev.x - renderAt_.x != 0)
-	{
-		//std::cout << "Rendering at x=" << renderAt_.x << "   Render position delta " << renderAtPrev.x - renderAt_.x << std::endl;
-	}
-
 
 	std::ostringstream oss;
 
@@ -128,7 +84,6 @@ void Entity::render(Renderer* renderer, double lerp)
 		<< "Previous position = " << position_.previous.x << ", " << position_.previous.y << std::endl
 		<< "lerp = " << lerp << std::endl
 		<< "Rendering at " << renderAt_.x << ", " << renderAt_.y << " at time " << timer.getTotalTime() << " delta time = " << timer.getDeltaTime() << std::endl;
-
 
 	logger.log(oss.str());
 

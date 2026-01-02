@@ -45,7 +45,4 @@ public:
     Vec2        renderAt_;
     Size        size_;
     float       speed_;
-
-    uint64_t    changeTimeStamp;
-    uint64_t    changeTimeStampPrev;
 };

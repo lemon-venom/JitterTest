@@ -77,7 +77,6 @@ uint64_t Timer::frameTick()
 	// Count the number of frames displayed each second.
 	bool setFps = false;
 
-	// If greater than a second, subtract off seconds until less than a second
 	while (fpsTimeCounter_ > 1.0)
 	{
 		fpsTimeCounter_ -= 1.0;
@@ -88,6 +87,8 @@ uint64_t Timer::frameTick()
 	if (setFps == true)
 	{
 		fps_ = fpsFrameCounter_;
+
+		//std::cout << "\rFPS: " << fps_ << std::flush;
 
 		fpsFrameCounter_ = 0;
 	}

@@ -10,15 +10,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <GL/glew.h>
-//#include <GL/freeglut.h>
-//#include <GL/gl.h>
-//#include <GL/glu.h>
-//#include <stdio.h>
-#include <IL/il.h>
-#include <IL/ilu.h>
 
 #include <SDL.h>
-#include <SDL_image.h>
 #include <vector>
 
 struct ColorRgba
@@ -63,7 +56,6 @@ private:
     bool	initVbo();
     void	freeVao();
     void	freeVbo();
-    bool    initializeDevIl();
     bool    initializeOpenGl();
     bool    initializeShader();
     void	updateVbo();

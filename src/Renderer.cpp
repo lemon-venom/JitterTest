@@ -1,5 +1,5 @@
 #include "..\headers\Renderer.hpp"
-
+#pragma comment( lib, "opengl32.lib" )
 Renderer::Renderer()
 {
 	vertexBufferId_ = 0;
@@ -94,36 +94,10 @@ bool Renderer::initialize()
 		return false;
 	}
 
-	std::cout << "Initializing DevIL..." << std::endl;
-
-	if (initializeDevIl() == false)
-	{
-		return false;
-	}
-
 	std::cout << "Initializing Shader..." << std::endl;
 
 	if (initializeShader() == false)
 	{
-		return false;
-	}
-
-	return true;
-}
-
-bool Renderer::initializeDevIl()
-{
-	//Initialize DevIL
-	ilInit();
-	iluInit();
-	ilClearColour(255, 255, 255, 000);
-
-	//Check for error
-	ILenum ilError = ilGetError();
-
-	if (ilError != IL_NO_ERROR)
-	{
-		std::cout << "DevIL initialization failed with error " << iluErrorString(ilError) << std::endl;
 		return false;
 	}
 
@@ -152,12 +126,15 @@ bool Renderer::initializeOpenGl()
 		return false;
 	}
 
+	// Use vsync by default.
 	if (SDL_GL_SetSwapInterval(1) == -1)
 	{
 		std::cout << "Failed to set Swap Interval with error " << SDL_GetError() << std::endl;
 
 		return false;
 	}
+
+	useVsync_ = true;
 
 	//Make sure OpenGL 2.1 is supported
 	if (!GLEW_VERSION_2_1)
@@ -402,7 +379,6 @@ void main()
 	return true;
 }
 
-
 bool Renderer::initVbo()
 {
 	if (vertexBufferId_ == 0)
@@ -456,7 +432,6 @@ void Renderer::sceneBegin()
 	vertexData_.clear();
 	indexData_.clear();
 }
-
 
 void Renderer::sceneComplete()
 {
